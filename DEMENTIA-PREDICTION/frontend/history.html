@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment History - DementiaDetect</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <span>DementiaDetect</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="assessment.html" class="nav-link">New Assessment</a></li>
+                    <li><a href="history.html" class="nav-link active">History</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="history-main">
+        <div class="container">
+            <div class="history-header">
+                <h1 class="page-title">Assessment History</h1>
+                <p class="page-subtitle">Track your cognitive health over time</p>
+                
+                <div class="history-controls">
+                    <div class="filter-group">
+                        <select id="timeFilter" class="filter-select">
+                            <option value="all">All Time</option>
+                            <option value="3months">Last 3 Months</option>
+                            <option value="6months">Last 6 Months</option>
+                            <option value="1year">Last Year</option>
+                        </select>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn btn-outline" onclick="exportHistory()">
+                            <i class="fas fa-download"></i>
+                            Export Report
+                        </button>
+                        <a href="assessment.html" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            New Assessment
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-overview">
+                <div class="overview-cards">
+                    <div class="overview-card">
+                        <div class="card-icon">
+                            <i class="fas fa-clipboard-list"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="totalAssessments">12</h3>
+                            <p>Total Assessments</p>
+                        </div>
+                    </div>
+                    
+                    <div class="overview-card">
+                        <div class="card-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="lastAssessment">2 days ago</h3>
+                            <p>Last Assessment</p>
+                        </div>
+                    </div>
+                    
+                    <div class="overview-card">
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="averageScore">8.2</h3>
+                            <p>Average Score</p>
+                        </div>
+                    </div>
+                    
+                    <div class="overview-card">
+                        <div class="card-icon trend-up">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="trendIndicator">Improving</h3>
+                            <p>Trend</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-content">
+                <div class="history-grid">
+                    <!-- Progress Chart -->
+                    <div class="chart-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-chart-line"></i>
+                            Progress Over Time
+                        </h3>
+                        <div class="chart-container">
+                            <canvas id="progressChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Assessment List -->
+                    <div class="assessments-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-history"></i>
+                            Recent Assessments
+                        </h3>
+                        
+                        <div class="assessments-table-container">
+                            <table class="assessments-table" id="assessmentsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Risk Level</th>
+                                        <th>Score</th>
+                                        <th>Confidence</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="assessmentsTableBody">
+                                    <!-- Data will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Risk Factors Tracking -->
+                    <div class="factors-tracking-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-shield-alt"></i>
+                            Risk Factors Over Time
+                        </h3>
+                        <div class="factors-chart-container">
+                            <canvas id="factorsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Insights -->
+                    <div class="insights-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-lightbulb"></i>
+                            Insights & Recommendations
+                        </h3>
+                        <div class="insights-list" id="insightsList">
+                            <!-- Insights will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Assessment Detail Modal -->
+    <div class="modal" id="assessmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Assessment Details</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Assessment details will be loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                <button class="btn btn-primary" onclick="printAssessment()">
+                    <i class="fas fa-print"></i>
+                    Print
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample assessment data - replace with actual data from backend
+        const assessmentHistory = [
+            {
+                id: 1,
+                date: '2025-11-03',
+                riskLevel: 'Low Risk',
+                score: 8.7,
+                confidence: 92,
+                memoryScore: 8.5,
+                cognitiveScore: 8.9,
+                attentionScore: 8.7,
+                factors: ['Good Exercise', 'Healthy Sleep']
+            },
+            {
+                id: 2,
+                date: '2025-10-15',
+                riskLevel: 'Low Risk',
+                score: 8.2,
+                confidence: 87,
+                memoryScore: 8.0,
+                cognitiveScore: 8.4,
+                attentionScore: 8.2,
+                factors: ['Regular Exercise', 'Good Social Activity']
+            },
+            {
+                id: 3,
+                date: '2025-09-28',
+                riskLevel: 'Medium Risk',
+                score: 6.8,
+                confidence: 74,
+                memoryScore: 6.5,
+                cognitiveScore: 7.1,
+                attentionScore: 6.8,
+                factors: ['Stress', 'Poor Sleep']
+            }
+            // Add more sample data as needed
+        ];
+
+        function loadAssessmentHistory() {
+            const tableBody = document.getElementById('assessmentsTableBody');
+            tableBody.innerHTML = '';
+
+            assessmentHistory.forEach(assessment => {
+                const row = document.createElement('tr');
+                const riskClass = assessment.riskLevel.toLowerCase().replace(' ', '-');
+                
+                row.innerHTML = `
+                    <td>${formatDate(assessment.date)}</td>
+                    <td>
+                        <span class="risk-badge ${riskClass}">
+                            ${assessment.riskLevel}
+                        </span>
+                    </td>
+                    <td><strong>${assessment.score}/10</strong></td>
+                    <td>${assessment.confidence}%</td>
+                    <td>
+                        <button class="btn btn-sm btn-outline" onclick="viewAssessment(${assessment.id})">
+                            <i class="fas fa-eye"></i>
+                            View
+                        </button>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        function viewAssessment(id) {
+            const assessment = assessmentHistory.find(a => a.id === id);
+            if (!assessment) return;
+
+            const modalBody = document.getElementById('modalBody');
+            modalBody.innerHTML = `
+                <div class="assessment-details">
+                    <div class="detail-section">
+                        <h4>Overall Results</h4>
+                        <div class="detail-grid">
+                            <div class="detail-item">
+                                <span class="detail-label">Date:</span>
+                                <span class="detail-value">${formatDate(assessment.date)}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Risk Level:</span>
+                                <span class="detail-value risk-badge ${assessment.riskLevel.toLowerCase().replace(' ', '-')}">${assessment.riskLevel}</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Overall Score:</span>
+                                <span class="detail-value">${assessment.score}/10</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Confidence:</span>
+                                <span class="detail-value">${assessment.confidence}%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Detailed Scores</h4>
+                        <div class="scores-breakdown">
+                            <div class="score-item">
+                                <span class="score-name">Memory</span>
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: ${(assessment.memoryScore/10)*100}%"></div>
+                                </div>
+                                <span class="score-value">${assessment.memoryScore}/10</span>
+                            </div>
+                            <div class="score-item">
+                                <span class="score-name">Cognitive Function</span>
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: ${(assessment.cognitiveScore/10)*100}%"></div>
+                                </div>
+                                <span class="score-value">${assessment.cognitiveScore}/10</span>
+                            </div>
+                            <div class="score-item">
+                                <span class="score-name">Attention & Focus</span>
+                                <div class="score-bar">
+                                    <div class="score-fill" style="width: ${(assessment.attentionScore/10)*100}%"></div>
+                                </div>
+                                <span class="score-value">${assessment.attentionScore}/10</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h4>Contributing Factors</h4>
+                        <div class="factors-list">
+                            ${assessment.factors.map(factor => `<span class="factor-tag">${factor}</span>`).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('assessmentModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('assessmentModal').style.display = 'none';
+        }
+
+        function createProgressChart() {
+            const ctx = document.getElementById('progressChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: assessmentHistory.map(a => formatDate(a.date)).reverse(),
+                    datasets: [{
+                        label: 'Overall Score',
+                        data: assessmentHistory.map(a => a.score).reverse(),
+                        borderColor: '#007bff',
+                        backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        function exportHistory() {
+            // Create CSV content
+            let csv = 'Date,Risk Level,Overall Score,Confidence,Memory Score,Cognitive Score,Attention Score\n';
+            
+            assessmentHistory.forEach(assessment => {
+                csv += `${assessment.date},${assessment.riskLevel},${assessment.score},${assessment.confidence}%,${assessment.memoryScore},${assessment.cognitiveScore},${assessment.attentionScore}\n`;
+            });
+
+            // Download CSV
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'dementia_assessment_history.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Load data when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAssessmentHistory();
+            createProgressChart();
+            
+            // Update overview stats
+            document.getElementById('totalAssessments').textContent = assessmentHistory.length;
+            document.getElementById('lastAssessment').textContent = 'Today';
+            
+            const avgScore = (assessmentHistory.reduce((sum, a) => sum + a.score, 0) / assessmentHistory.length).toFixed(1);
+            document.getElementById('averageScore').textContent = avgScore;
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('assessmentModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

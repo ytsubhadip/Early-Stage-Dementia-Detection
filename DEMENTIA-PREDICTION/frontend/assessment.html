@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Assessment - DementiaDetect</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="assessment-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <span>DementiaDetect</span>
+                </div>
+                <div class="assessment-progress">
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <span class="progress-text" id="progressText">Medical Data Collection</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="assessment-main">
+        <div class="container">
+            <div class="assessment-wrapper">
+                <div class="assessment-card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <i class="fas fa-stethoscope"></i>
+                            Medical Assessment Form
+                        </h2>
+                        <p class="card-subtitle">Please provide accurate medical information for precise dementia risk analysis</p>
+                    </div>
+
+                    <form id="medicalAssessmentForm" class="medical-form">
+                        <div class="form-sections">
+                            
+                            <!-- Cognitive Assessment Section -->
+                            <div class="form-section active" id="cognitiveSection">
+                                <h3 class="section-title">
+                                    <i class="fas fa-brain"></i>
+                                    Cognitive Assessment Data
+                                </h3>
+                                
+                                <div class="medical-inputs-grid">
+                                    <div class="medical-input-group">
+                                        <label for="mmse">Mini-Mental State Exam (MMSE)</label>
+                                        <div class="input-wrapper">
+                                            <input type="number" id="mmse" name="mmse" min="0" max="30" step="0.1" placeholder="Enter MMSE Score (0-30)" required>
+                                            <span class="input-unit">/ 30</span>
+                                            <div class="input-info">
+                                                <i class="fas fa-info-circle"></i>
+                                                <span class="tooltip">Normal: 24-30, Mild impairment: 18-23, Moderate: 12-17, Severe: <12</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="medical-input-group">
+                                        <label for="cdr">Clinical Dementia Rating (CDR)</label>
+                                        <div class="input-wrapper">
+                                            <select id="cdr" name="cdr" required>
+                                                <option value="">Select CDR Score</option>
+                                                <option value="0">0 - Normal</option>
+                                                <option value="0.5">0.5 - Very Mild</option>
+                                                <option value="1">1 - Mild</option>
+                                                <option value="2">2 - Moderate</option>
+                                                <option value="3">3 - Severe</option>
+                                            </select>
+                                            <div class="input-info">
+                                                <i class="fas fa-info-circle"></i>
+                                                <span class="tooltip">CDR measures severity of cognitive impairment</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Brain Imaging Section -->
+                            <div class="form-section" id="imagingSection">
+                                <h3 class="section-title">
+                                    <i class="fas fa-x-ray"></i>
+                                    Brain Imaging Measurements
+                                </h3>
+                                
+                                <div class="medical-inputs-grid">
+                                    <div class="medical-input-group">
+                                        <label for="nwbv">Normalized Whole Brain Volume</label>
+                                        <div class="input-wrapper">
+                                            <input type="number" id="nwbv" name="nwbv" min="0.5" max="1.0" step="0.001" placeholder="Enter NWBV (0.5-1.0)" required>
+                                            <span class="input-unit">ratio</span>
+                                            <div class="input-info">
+                                                <i class="fas fa-info-circle"></i>
+                                                <span class="tooltip">Brain volume normalized to skull size. Lower values indicate atrophy</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="medical-input-group">
+                                        <label for="etiv">Estimated Total Intracranial Volume</label>
+                                        <div class="input-wrapper">
+                                            <input type="number" id="etiv" name="etiv" min="1000" max="2500" step="1" placeholder="Enter eTIV (1000-2500)" required>
+                                            <span class="input-unit">cm³</span>
+                                            <div class="input-info">
+                                                <i class="fas fa-info-circle"></i>
+                                                <span class="tooltip">Total volume inside the skull, used for normalization</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="medical-input-group">
+                                        <label for="asf">Atlas Scaling Factor</label>
+                                        <div class="input-wrapper">
+                                            <input type="number" id="asf" name="asf" min="0.8" max="1.8" step="0.001" placeholder="Enter ASF (0.8-1.8)" required>
+                                            <span class="input-unit">factor</span>
+                                            <div class="input-info">
+                                                <i class="fas fa-info-circle"></i>
+                                                <span class="tooltip">Scaling factor for brain atlas registration</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Demographic Section -->
+                            <div class="form-section" id="demographicSection">
+                                <h3 class="section-title">
+                                    <i class="fas fa-user"></i>
+                                    Demographic Information
+                                </h3>
+                                
+                                <div class="medical-inputs-grid">
+                                    <div class="medical-input-group">
+                                        <label for="age">Age</label>
+                                        <div class="input-wrapper">
+                                            <input type="number" id="age" name="age" min="18" max="120" step="1" placeholder="Enter age" required>
+                                            <span class="input-unit">years</span>
+                                            <div class="input-info">
+                                                <i class="fas fa-info-circle"></i>
+                                                <span class="tooltip">Patient's current age in years</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="medical-input-group">
+                                        <label for="education">Years of Education</label>
+                                        <div class="input-wrapper">
+                                            <input type="number" id="education" name="education" min="0" max="25" step="1" placeholder="Enter years of education" required>
+                                            <span class="input-unit">years</span>
+                                            <div class="input-info">
+                                                <i class="fas fa-info-circle"></i>
+                                                <span class="tooltip">Total years of formal education completed</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="medical-input-group">
+                                        <label for="gender">Gender</label>
+                                        <div class="input-wrapper">
+                                            <select id="gender" name="gender" required>
+                                                <option value="">Select Gender</option>
+                                                <option value="M">Male</option>
+                                                <option value="F">Female</option>
+                                            </select>
+                                            <div class="input-info">
+                                                <i class="fas fa-info-circle"></i>
+                                                <span class="tooltip">Biological sex assigned at birth</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="medical-input-group">
+                                        <label for="ses">Socioeconomic Status</label>
+                                        <div class="input-wrapper">
+                                            <select id="ses" name="ses" required>
+                                                <option value="">Select SES Level</option>
+                                                <option value="1">1 - Lowest</option>
+                                                <option value="2">2 - Low</option>
+                                                <option value="3">3 - Middle</option>
+                                                <option value="4">4 - High</option>
+                                                <option value="5">5 - Highest</option>
+                                            </select>
+                                            <div class="input-info">
+                                                <i class="fas fa-info-circle"></i>
+                                                <span class="tooltip">Economic and social position relative to others</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Navigation and Submit -->
+                        <div class="form-navigation">
+                            <div class="nav-buttons">
+                                <button type="button" id="prevBtn" class="btn btn-secondary" onclick="previousSection()" style="display: none;">
+                                    <i class="fas fa-arrow-left"></i>
+                                    Previous
+                                </button>
+                                
+                                <div class="section-indicators">
+                                    <span class="indicator active" data-section="0"></span>
+                                    <span class="indicator" data-section="1"></span>
+                                    <span class="indicator" data-section="2"></span>
+                                </div>
+
+                                <button type="button" id="nextBtn" class="btn btn-primary" onclick="nextSection()">
+                                    Next
+                                    <i class="fas fa-arrow-right"></i>
+                                </button>
+                                
+                                <button type="submit" id="submitBtn" class="btn btn-success" style="display: none;">
+                                    <i class="fas fa-brain"></i>
+                                    Analyze Risk
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Medical Data Summary Panel -->
+                <div class="data-summary-panel" id="summaryPanel">
+                    <h4>
+                        <i class="fas fa-chart-bar"></i>
+                        Data Summary
+                    </h4>
+                    <div class="summary-content">
+                        <div class="summary-item">
+                            <span class="label">Completion:</span>
+                            <span class="value" id="completionRate">0%</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="label">Required Fields:</span>
+                            <span class="value" id="requiredCount">9</span>
+                        </div>
+                        <div class="data-quality-indicator">
+                            <div class="quality-bar">
+                                <div class="quality-fill" id="qualityFill"></div>
+                            </div>
+                            <span class="quality-text">Data Quality</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+   <!-- Remove these lines that are causing 404 errors -->
+<!-- <script src="js/medical-assessment.js"></script> -->
+<!-- <script src="js/ui-enhancements.js"></script> -->
+
+<!-- Add this inline solution instead -->
+<!-- Remove these lines -->
+<!-- <script src="js/medical-assessment.js"></script> -->
+<!-- <script src="js/ui-enhancements.js"></script> -->
+
+<!-- Complete working inline solution -->
+<script>
+// ===== ENHANCED MEDICAL ASSESSMENT SOLUTION =====
+
+class MedicalAssessment {
+    constructor() {
+        this.currentSection = 0;
+        this.totalSections = 3;
+        this.formData = {};
+        this.validationRules = this.setupValidationRules();
+        this.init();
+    }
+
+    init() {
+        console.log('MedicalAssessment initialized');
+        this.addEnhancedStyles(); // Add styles first
+        this.setupNavigation();
+        this.setupValidation();
+        this.updateNavigation();
+        this.updateProgress();
+    }
+
+    addEnhancedStyles() {
+        // Remove existing style if present
+        const existingStyle = document.querySelector('#assessment-styles');
+        if (existingStyle) existingStyle.remove();
+
+        const style = document.createElement('style');
+        style.id = 'assessment-styles';
+        style.textContent = `
+            /* Enhanced validation states with higher specificity */
+            .input-wrapper.error,
+            .medical-input-group .input-wrapper.error {
+                border: 2px solid #dc3545 !important;
+                background-color: rgba(248, 215, 218, 0.3) !important;
+                box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
+                animation: shake 0.5s ease !important;
+            }
+            
+            .input-wrapper.success,
+            .medical-input-group .input-wrapper.success {
+                border: 2px solid #28a745 !important;
+                background-color: rgba(212, 237, 218, 0.3) !important;
+                box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1) !important;
+            }
+            
+            .input-wrapper.warning,
+            .medical-input-group .input-wrapper.warning {
+                border: 2px solid #ffc107 !important;
+                background-color: rgba(255, 243, 205, 0.3) !important;
+                box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.1) !important;
+            }
+
+            /* Success checkmark */
+            .input-wrapper.success::after {
+                content: '✓';
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #28a745;
+                font-weight: bold;
+                font-size: 18px;
+                z-index: 10;
+            }
+
+            /* Error icon */
+            .input-wrapper.error::after {
+                content: '✗';
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #dc3545;
+                font-weight: bold;
+                font-size: 18px;
+                z-index: 10;
+            }
+
+            /* Warning icon */
+            .input-wrapper.warning::after {
+                content: '⚠';
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #ffc107;
+                font-weight: bold;
+                font-size: 16px;
+                z-index: 10;
+            }
+
+            /* Adjust for input-unit */
+            .input-wrapper.success .input-unit,
+            .input-wrapper.error .input-unit,
+            .input-wrapper.warning .input-unit {
+                margin-right: 35px;
+            }
+            
+            /* Form sections */
+            .form-section {
+                display: none !important;
+            }
+            
+            .form-section.active {
+                display: block !important;
+                animation: fadeInSlide 0.4s ease;
+            }
+            
+            @keyframes fadeInSlide {
+                from { 
+                    opacity: 0; 
+                    transform: translateX(20px); 
+                }
+                to { 
+                    opacity: 1; 
+                    transform: translateX(0); 
+                }
+            }
+            
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+                20%, 40%, 60%, 80% { transform: translateX(3px); }
+            }
+            
+            /* Enhanced indicators */
+            .indicator {
+                width: 14px !important;
+                height: 14px !important;
+                border-radius: 50% !important;
+                background: #ccc !important;
+                display: inline-block !important;
+                margin: 0 6px !important;
+                cursor: pointer !important;
+                transition: all 0.3s ease !important;
+                position: relative !important;
+            }
+            
+            .indicator.active {
+                background: #007bff !important;
+                transform: scale(1.3) !important;
+                box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2) !important;
+            }
+            
+            .indicator.completed {
+                background: #28a745 !important;
+                transform: scale(1.1) !important;
+            }
+
+            .indicator.completed::after {
+                content: '✓';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: white;
+                font-size: 10px;
+                font-weight: bold;
+            }
+            
+            /* Progress bar enhancement */
+            .progress-fill {
+                transition: width 0.5s ease !important;
+                background: linear-gradient(90deg, #007bff, #0056b3) !important;
+            }
+            
+            /* Quality indicator */
+            .quality-fill {
+                transition: width 0.8s ease !important;
+                background: linear-gradient(90deg, #dc3545 0%, #ffc107 50%, #28a745 100%) !important;
+            }
+
+            /* Button enhancements */
+            .btn {
+                transition: all 0.3s ease !important;
+            }
+
+            .btn:hover {
+                transform: translateY(-2px) !important;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+            }
+
+            .btn:active {
+                transform: translateY(0) !important;
+            }
+
+            /* Field feedback messages */
+            .field-feedback {
+                margin-top: 0.5rem;
+                padding: 0.5rem 1rem;
+                border-radius: 0.5rem;
+                font-size: 0.875rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                animation: slideDown 0.3s ease;
+                border-left: 4px solid;
+            }
+            
+            .field-feedback.error {
+                background: #f8d7da;
+                color: #721c24;
+                border-color: #dc3545;
+            }
+            
+            .field-feedback.warning {
+                background: #fff3cd;
+                color: #856404;
+                border-color: #ffc107;
+            }
+            
+            @keyframes slideDown {
+                from { 
+                    opacity: 0; 
+                    transform: translateY(-10px); 
+                    max-height: 0; 
+                }
+                to { 
+                    opacity: 1; 
+                    transform: translateY(0); 
+                    max-height: 50px; 
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    setupValidationRules() {
+        return {
+            mmse: { min: 0, max: 30, type: 'number', required: true },
+            cdr: { type: 'select', required: true },
+            nwbv: { min: 0.5, max: 1.0, type: 'number', required: true },
+            etiv: { min: 1000, max: 2500, type: 'number', required: true },
+            asf: { min: 0.8, max: 1.8, type: 'number', required: true },
+            age: { min: 18, max: 120, type: 'number', required: true },
+            education: { min: 0, max: 25, type: 'number', required: true },
+            gender: { type: 'select', required: true },
+            ses: { type: 'select', required: true }
+        };
+    }
+
+    setupNavigation() {
+        console.log('Setting up navigation...');
+        
+        const nextBtn = document.getElementById('nextBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const submitBtn = document.getElementById('submitBtn');
+
+        if (nextBtn) {
+            // Clone to remove existing event listeners
+            const newNextBtn = nextBtn.cloneNode(true);
+            nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+            
+            newNextBtn.removeAttribute('onclick');
+            newNextBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Next button clicked');
+                this.nextSection();
+            });
+            console.log('Next button setup complete');
+        }
+
+        if (prevBtn) {
+            const newPrevBtn = prevBtn.cloneNode(true);
+            prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
+            
+            newPrevBtn.removeAttribute('onclick');
+            newPrevBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Previous button clicked');
+                this.previousSection();
+            });
+        }
+
+        if (submitBtn) {
+            const newSubmitBtn = submitBtn.cloneNode(true);
+            submitBtn.parentNode.replaceChild(newSubmitBtn, submitBtn);
+            
+            newSubmitBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Submit button clicked');
+                this.handleSubmit();
+            });
+        }
+    }
+
+    setupValidation() {
+        const inputs = document.querySelectorAll('#medicalAssessmentForm input, #medicalAssessmentForm select');
+        console.log(`Setting up validation for ${inputs.length} inputs`);
+        
+        inputs.forEach(input => {
+            input.addEventListener('input', () => {
+                this.validateField(input);
+                this.updateProgress();
+            });
+
+            input.addEventListener('blur', () => {
+                this.showFieldFeedback(input);
+            });
+
+            input.addEventListener('focus', () => {
+                this.clearFieldError(input);
+            });
+        });
+    }
+
+    validateField(field) {
+        const fieldName = field.name;
+        const value = field.value.trim();
+        const rule = this.validationRules[fieldName];
+        const wrapper = field.closest('.input-wrapper');
+        
+        if (!wrapper || !rule) return true;
+
+        // Clear previous states
+        wrapper.classList.remove('error', 'success', 'warning');
+
+        let isValid = true;
+        let errorMessage = '';
+
+        // Required field check
+        if (rule.required && !value) {
+            isValid = false;
+            errorMessage = 'This field is required';
+        } else if (value) {
+            // Type-specific validation
+            if (rule.type === 'number') {
+                const num = parseFloat(value);
+                if (isNaN(num)) {
+                    isValid = false;
+                    errorMessage = 'Please enter a valid number';
+                } else if (rule.min !== undefined && num < rule.min) {
+                    isValid = false;
+                    errorMessage = `Value must be at least ${rule.min}`;
+                } else if (rule.max !== undefined && num > rule.max) {
+                    isValid = false;
+                    errorMessage = `Value must not exceed ${rule.max}`;
+                } else {
+                    // Check for warnings
+                    if (fieldName === 'mmse' && num < 24) {
+                        wrapper.classList.add('warning');
+                        field.setAttribute('data-warning', 'Score may indicate cognitive impairment');
+                    } else if (fieldName === 'age' && num > 75) {
+                        wrapper.classList.add('warning');
+                        field.setAttribute('data-warning', 'Advanced age increases risk');
+                    } else {
+                        wrapper.classList.add('success');
+                    }
+                }
+            } else {
+                wrapper.classList.add('success');
+            }
+        }
+
+        // Apply validation state
+        if (!isValid) {
+            wrapper.classList.add('error');
+            field.setAttribute('data-error', errorMessage);
+            delete this.formData[fieldName];
+        } else if (value) {
+            this.formData[fieldName] = value;
+        }
+
+        console.log(`Validated ${fieldName}: ${isValid ? 'valid' : 'invalid'}`);
+        return isValid;
+    }
+
+    showFieldFeedback(field) {
+        const wrapper = field.closest('.input-wrapper');
+        if (!wrapper) return;
+
+        const errorMsg = field.getAttribute('data-error');
+        const warningMsg = field.getAttribute('data-warning');
+        
+        // Remove existing feedback
+        const existingFeedback = wrapper.parentNode.querySelector('.field-feedback');
+        if (existingFeedback) {
+            existingFeedback.remove();
+        }
+
+        // Show error or warning
+        if (errorMsg || warningMsg) {
+            const feedback = document.createElement('div');
+            const isError = !!errorMsg;
+            const message = errorMsg || warningMsg;
+            
+            feedback.className = `field-feedback ${isError ? 'error' : 'warning'}`;
+            feedback.innerHTML = `
+                <i class="fas fa-${isError ? 'exclamation-circle' : 'exclamation-triangle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            wrapper.parentNode.appendChild(feedback);
+        }
+    }
+
+    clearFieldError(field) {
+        const wrapper = field.closest('.input-wrapper');
+        if (!wrapper) return;
+
+        const feedback = wrapper.parentNode.querySelector('.field-feedback.error');
+        if (feedback) {
+            feedback.remove();
+        }
+        
+        field.removeAttribute('data-error');
+    }
+
+    validateCurrentSection() {
+        const sections = ['cognitiveSection', 'imagingSection', 'demographicSection'];
+        const currentSectionElement = document.getElementById(sections[this.currentSection]);
+        
+        if (!currentSectionElement) {
+            console.error('Section not found:', sections[this.currentSection]);
+            return false;
+        }
+
+        const requiredFields = currentSectionElement.querySelectorAll('[required]');
+        console.log(`Validating ${requiredFields.length} required fields in section ${this.currentSection}`);
+        
+        let isValid = true;
+        const errors = [];
+
+        requiredFields.forEach(field => {
+            if (!this.validateField(field)) {
+                isValid = false;
+                errors.push(field.name);
+                this.showFieldFeedback(field);
+            }
+        });
+
+        if (!isValid) {
+            console.log('Validation failed for fields:', errors);
+            this.showNotification('Please complete all required fields in this section.', 'error');
+            
+            // Focus first invalid field
+            const firstInvalidField = currentSectionElement.querySelector('.input-wrapper.error input, .input-wrapper.error select');
+            if (firstInvalidField) {
+                firstInvalidField.focus();
+                firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        return isValid;
+    }
+
+    nextSection() {
+        console.log(`Next section called. Current: ${this.currentSection}`);
+        
+        if (!this.validateCurrentSection()) {
+            console.log('Validation failed, staying in current section');
+            return;
+        }
+
+        if (this.currentSection < this.totalSections - 1) {
+            // Hide current section
+            const sections = document.querySelectorAll('.form-section');
+            sections[this.currentSection].classList.remove('active');
+            
+            // Show next section
+            this.currentSection++;
+            sections[this.currentSection].classList.add('active');
+            
+            this.updateNavigation();
+            this.updateIndicators();
+            this.scrollToTop();
+            
+            console.log(`Moved to section: ${this.currentSection}`);
+        }
+    }
+
+    previousSection() {
+        if (this.currentSection > 0) {
+            const sections = document.querySelectorAll('.form-section');
+            sections[this.currentSection].classList.remove('active');
+            
+            this.currentSection--;
+            sections[this.currentSection].classList.add('active');
+            
+            this.updateNavigation();
+            this.updateIndicators();
+            this.scrollToTop();
+        }
+    }
+
+    scrollToTop() {
+        const assessmentCard = document.querySelector('.assessment-card');
+        if (assessmentCard) {
+            assessmentCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    }
+
+    updateNavigation() {
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const submitBtn = document.getElementById('submitBtn');
+
+        // Update previous button
+        if (prevBtn) {
+            prevBtn.style.display = this.currentSection > 0 ? 'inline-flex' : 'none';
+        }
+
+        // Update next/submit buttons
+        if (this.currentSection === this.totalSections - 1) {
+            if (nextBtn) nextBtn.style.display = 'none';
+            if (submitBtn) submitBtn.style.display = 'inline-flex';
+        } else {
+            if (nextBtn) nextBtn.style.display = 'inline-flex';
+            if (submitBtn) submitBtn.style.display = 'none';
+        }
+
+        // Update progress text
+        const progressText = document.getElementById('progressText');
+        if (progressText) {
+            const sectionNames = ['Cognitive Assessment', 'Brain Imaging', 'Demographics'];
+            progressText.textContent = sectionNames[this.currentSection];
+        }
+
+        // Update progress bar
+        const progressFill = document.getElementById('progressFill');
+        if (progressFill) {
+            const progress = ((this.currentSection + 1) / this.totalSections) * 100;
+            progressFill.style.width = progress + '%';
+        }
+    }
+
+    updateIndicators() {
+        document.querySelectorAll('.indicator').forEach((indicator, index) => {
+            indicator.classList.remove('active', 'completed');
+            
+            if (index === this.currentSection) {
+                indicator.classList.add('active');
+            } else if (index < this.currentSection) {
+                indicator.classList.add('completed');
+            }
+        });
+    }
+
+   // Add these methods to your existing MedicalAssessment class
+
+updateProgress() {
+    const totalFields = Object.keys(this.validationRules).length;
+    const completedFields = Object.keys(this.formData).length;
+    const completionRate = Math.round((completedFields / totalFields) * 100);
+
+    console.log(`Progress: ${completedFields}/${totalFields} (${completionRate}%)`);
+
+    // Update summary panel
+    const completionElement = document.getElementById('completionRate');
+    if (completionElement) {
+        completionElement.textContent = completionRate + '%';
+    }
+
+    const qualityFill = document.getElementById('qualityFill');
+    if (qualityFill) {
+        qualityFill.style.width = completionRate + '%';
+    }
+
+    const requiredCount = document.getElementById('requiredCount');
+    if (requiredCount) {
+        requiredCount.textContent = `${completedFields}/${totalFields}`;
+    }
+
+    // Update recommendations and risk factors
+    this.updateRecommendations();
+    this.updateRiskFactors();
+}
+
+updateRecommendations() {
+    const recommendations = this.generateRecommendations();
+    
+    // Create or update recommendations section in summary panel
+    let recommendationsSection = document.getElementById('recommendationsSection');
+    if (!recommendationsSection) {
+        recommendationsSection = this.createRecommendationsSection();
+    }
+    
+    // Populate recommendations
+    const recommendationsList = recommendationsSection.querySelector('.recommendations-list');
+    recommendationsList.innerHTML = '';
+    
+    recommendations.forEach(rec => {
+        const recItem = document.createElement('div');
+        recItem.className = 'recommendation-item';
+        recItem.innerHTML = `
+            <div class="rec-icon ${rec.type}">
+                <i class="fas fa-${rec.icon}"></i>
+            </div>
+            <div class="rec-content">
+                <div class="rec-title">${rec.title}</div>
+                <div class="rec-description">${rec.description}</div>
+            </div>
+        `;
+        recommendationsList.appendChild(recItem);
+    });
+}
+
+updateRiskFactors() {
+    const riskFactors = this.analyzeRiskFactors();
+    
+    // Create or update risk factors section
+    let riskSection = document.getElementById('riskFactorsSection');
+    if (!riskSection) {
+        riskSection = this.createRiskFactorsSection();
+    }
+    
+    // Populate risk factors
+    const riskList = riskSection.querySelector('.risk-factors-list');
+    riskList.innerHTML = '';
+    
+    riskFactors.forEach(risk => {
+        const riskItem = document.createElement('div');
+        riskItem.className = `risk-factor-item ${risk.level}`;
+        riskItem.innerHTML = `
+            <div class="risk-indicator ${risk.level}"></div>
+            <div class="risk-content">
+                <div class="risk-factor">${risk.factor}</div>
+                <div class="risk-impact">${risk.impact}</div>
+            </div>
+            <div class="risk-score">${risk.score}</div>
+        `;
+        riskList.appendChild(riskItem);
+    });
+}
+
+generateRecommendations() {
+    const recommendations = [];
+    const formData = this.formData;
+
+    // Base recommendations
+    recommendations.push({
+        icon: 'brain',
+        type: 'cognitive',
+        title: 'Cognitive Health',
+        description: 'Regular mental exercises and learning new skills'
+    });
+
+    // MMSE-based recommendations
+    if (formData.mmse) {
+        const mmse = parseFloat(formData.mmse);
+        if (mmse < 24) {
+            recommendations.push({
+                icon: 'user-md',
+                type: 'medical',
+                title: 'Medical Consultation',
+                description: 'Consult a neurologist for comprehensive evaluation'
+            });
+        }
+        if (mmse < 18) {
+            recommendations.push({
+                icon: 'home',
+                type: 'support',
+                title: 'Family Support',
+                description: 'Consider caregiver support and safety modifications'
+            });
+        }
+    }
+
+    // Age-based recommendations
+    if (formData.age) {
+        const age = parseInt(formData.age);
+        if (age > 65) {
+            recommendations.push({
+                icon: 'heartbeat',
+                type: 'lifestyle',
+                title: 'Cardiovascular Health',
+                description: 'Maintain heart health through exercise and diet'
+            });
+        }
+        if (age > 75) {
+            recommendations.push({
+                icon: 'calendar-check',
+                type: 'monitoring',
+                title: 'Regular Monitoring',
+                description: 'Annual cognitive assessments recommended'
+            });
+        }
+    }
+
+    // CDR-based recommendations
+    if (formData.cdr && parseFloat(formData.cdr) > 0) {
+        recommendations.push({
+            icon: 'pills',
+            type: 'treatment',
+            title: 'Treatment Options',
+            description: 'Discuss medication options with healthcare provider'
+        });
+    }
+
+    // Brain volume recommendations
+    if (formData.nwbv && parseFloat(formData.nwbv) < 0.75) {
+        recommendations.push({
+            icon: 'dumbbell',
+            type: 'exercise',
+            title: 'Physical Exercise',
+            description: 'Regular aerobic exercise to support brain health'
+        });
+    }
+
+    // Education-based recommendations
+    if (formData.education && parseInt(formData.education) < 12) {
+        recommendations.push({
+            icon: 'book',
+            type: 'cognitive',
+            title: 'Mental Stimulation',
+            description: 'Engage in reading, puzzles, and learning activities'
+        });
+    }
+
+    return recommendations.slice(0, 4); // Limit to 4 recommendations
+}
+
+analyzeRiskFactors() {
+    const riskFactors = [];
+    const formData = this.formData;
+
+    // Age risk factor
+    if (formData.age) {
+        const age = parseInt(formData.age);
+        let riskLevel = 'low';
+        let score = '1/5';
+        let impact = 'Minimal age-related risk';
+        
+        if (age > 65) {
+            riskLevel = 'medium';
+            score = '2/5';
+            impact = 'Moderate age-related risk increase';
+        }
+        if (age > 75) {
+            riskLevel = 'high';
+            score = '3/5';
+            impact = 'Significant age-related risk factor';
+        }
+        if (age > 85) {
+            riskLevel = 'critical';
+            score = '4/5';
+            impact = 'Very high age-related risk';
+        }
+        
+        riskFactors.push({
+            factor: 'Age Factor',
+            level: riskLevel,
+            score: score,
+            impact: impact
+        });
+    }
+
+    // MMSE risk factor
+    if (formData.mmse) {
+        const mmse = parseFloat(formData.mmse);
+        let riskLevel = 'low';
+        let score = '1/5';
+        let impact = 'Normal cognitive function';
+        
+        if (mmse < 24) {
+            riskLevel = 'medium';
+            score = '2/5';
+            impact = 'Mild cognitive impairment detected';
+        }
+        if (mmse < 18) {
+            riskLevel = 'high';
+            score = '4/5';
+            impact = 'Moderate cognitive impairment';
+        }
+        if (mmse < 12) {
+            riskLevel = 'critical';
+            score = '5/5';
+            impact = 'Severe cognitive impairment';
+        }
+        
+        riskFactors.push({
+            factor: 'Cognitive Performance',
+            level: riskLevel,
+            score: score,
+            impact: impact
+        });
+    }
+
+    // CDR risk factor
+    if (formData.cdr) {
+        const cdr = parseFloat(formData.cdr);
+        let riskLevel = 'low';
+        let score = '1/5';
+        let impact = 'No dementia symptoms';
+        
+        if (cdr === 0.5) {
+            riskLevel = 'medium';
+            score = '2/5';
+            impact = 'Very mild dementia symptoms';
+        } else if (cdr === 1) {
+            riskLevel = 'high';
+            score = '3/5';
+            impact = 'Mild dementia symptoms';
+        } else if (cdr >= 2) {
+            riskLevel = 'critical';
+            score = '4/5';
+            impact = 'Moderate to severe dementia';
+        }
+        
+        riskFactors.push({
+            factor: 'Clinical Rating',
+            level: riskLevel,
+            score: score,
+            impact: impact
+        });
+    }
+
+    // Brain volume risk factor
+    if (formData.nwbv) {
+        const nwbv = parseFloat(formData.nwbv);
+        let riskLevel = 'low';
+        let score = '1/5';
+        let impact = 'Normal brain volume';
+        
+        if (nwbv < 0.8) {
+            riskLevel = 'medium';
+            score = '2/5';
+            impact = 'Mild brain volume reduction';
+        }
+        if (nwbv < 0.75) {
+            riskLevel = 'high';
+            score = '3/5';
+            impact = 'Moderate brain atrophy detected';
+        }
+        if (nwbv < 0.7) {
+            riskLevel = 'critical';
+            score = '4/5';
+            impact = 'Significant brain volume loss';
+        }
+        
+        riskFactors.push({
+            factor: 'Brain Volume',
+            level: riskLevel,
+            score: score,
+            impact: impact
+        });
+    }
+
+    // Education protective factor
+    if (formData.education) {
+        const education = parseInt(formData.education);
+        let riskLevel = 'medium';
+        let score = '2/5';
+        let impact = 'Average cognitive reserve';
+        
+        if (education >= 16) {
+            riskLevel = 'low';
+            score = '1/5';
+            impact = 'High cognitive reserve (protective)';
+        } else if (education < 8) {
+            riskLevel = 'high';
+            score = '3/5';
+            impact = 'Low cognitive reserve';
+        }
+        
+        riskFactors.push({
+            factor: 'Education Level',
+            level: riskLevel,
+            score: score,
+            impact: impact
+        });
+    }
+
+    return riskFactors;
+}
+
+createRecommendationsSection() {
+    const summaryPanel = document.getElementById('summaryPanel');
+    if (!summaryPanel) return null;
+
+    const recommendationsSection = document.createElement('div');
+    recommendationsSection.id = 'recommendationsSection';
+    recommendationsSection.innerHTML = `
+        <h4 style="margin-top: 2rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-lightbulb" style="color: #ffc107;"></i>
+            Recommendations
+        </h4>
+        <div class="recommendations-list"></div>
+    `;
+    
+    summaryPanel.appendChild(recommendationsSection);
+    return recommendationsSection;
+}
+
+createRiskFactorsSection() {
+    const summaryPanel = document.getElementById('summaryPanel');
+    if (!summaryPanel) return null;
+
+    const riskSection = document.createElement('div');
+    riskSection.id = 'riskFactorsSection';
+    riskSection.innerHTML = `
+        <h4 style="margin-top: 2rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+            <i class="fas fa-exclamation-triangle" style="color: #dc3545;"></i>
+            Risk Factors Analysis
+        </h4>
+        <div class="risk-factors-list"></div>
+    `;
+    
+    summaryPanel.appendChild(riskSection);
+    return riskSection;
+}
+
+
+    showNotification(message, type = 'info') {
+        // Create enhanced notification
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            max-width: 400px;
+            background: ${type === 'error' ? '#dc3545' : type === 'success' ? '#28a745' : '#007bff'};
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: slideInRight 0.3s ease;
+        `;
+        
+        notification.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                <i class="fas fa-${type === 'error' ? 'exclamation-triangle' : type === 'success' ? 'check' : 'info-circle'}"></i>
+                <span>${message}</span>
+                <button onclick="this.parentElement.parentElement.remove()" style="background: none; border: none; color: white; margin-left: 1rem; cursor: pointer; font-size: 1.2rem;">×</button>
+            </div>
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Auto remove after 4 seconds
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }
+        }, 4000);
+    }
+
+    handleSubmit() {
+        console.log('Handling form submission');
+        
+        if (!this.validateCurrentSection()) {
+            return;
+        }
+
+        // Show loading state
+        const submitBtn = document.getElementById('submitBtn');
+        if (submitBtn) {
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+            submitBtn.disabled = true;
+        }
+
+        // Collect all form data
+        const formElements = document.querySelectorAll('#medicalAssessmentForm input, #medicalAssessmentForm select');
+        const finalData = {};
+        
+        formElements.forEach(element => {
+            if (element.value.trim()) {
+                finalData[element.name] = element.value.trim();
+            }
+        });
+
+        console.log('Final form data:', finalData);
+
+        // Store in localStorage
+        localStorage.setItem('dementiaAssessmentData', JSON.stringify(finalData));
+
+        // Show success message
+        this.showNotification('Assessment completed successfully! Redirecting to analysis...', 'success');
+
+        // Redirect after 2 seconds
+        setTimeout(() => {
+            window.location.href = 'processing.html';
+        }, 2000);
+    }
+}
+
+// Global functions
+window.nextSection = function() {
+    console.log('Global nextSection called');
+    if (window.medicalAssessment) {
+        window.medicalAssessment.nextSection();
+    }
+};
+
+window.previousSection = function() {
+    console.log('Global previousSection called');
+    if (window.medicalAssessment) {
+        window.medicalAssessment.previousSection();
+    }
+};
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing assessment...');
+    
+    // Small delay to ensure all elements are rendered
+    setTimeout(() => {
+        window.medicalAssessment = new MedicalAssessment();
+        console.log('MedicalAssessment initialized successfully');
+    }, 100);
+});
+
+// Add notification animations
+const notificationStyles = document.createElement('style');
+notificationStyles.textContent = `
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes slideOutRight {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(notificationStyles);
+</script>
+
+
+</body>
+</html>

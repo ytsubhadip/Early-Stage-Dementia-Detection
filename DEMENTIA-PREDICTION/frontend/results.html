@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Results - DementiaDetect</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="results-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                    <span>DementiaDetect</span>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-outline" onclick="window.print()">
+                        <i class="fas fa-print"></i>
+                        Print Report
+                    </button>
+                    <a href="assessment.html" class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        New Assessment
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="results-main">
+        <div class="container">
+            <div class="results-container">
+                <!-- Risk Level Card -->
+                <div class="risk-card" id="riskCard">
+                    <div class="risk-header">
+                        <div class="risk-icon" id="riskIcon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="risk-content">
+                            <h2 class="risk-level" id="riskLevel">LOW RISK</h2>
+                            <p class="risk-subtitle">For Dementia Development</p>
+                            <div class="confidence-score">
+                                <span class="confidence-label">Confidence:</span>
+                                <span class="confidence-value" id="confidenceValue">87%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="risk-gauge">
+                        <canvas id="riskGauge" width="200" height="100"></canvas>
+                    </div>
+                </div>
+
+                <div class="results-grid">
+                    <!-- Detailed Analysis -->
+                    <div class="analysis-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-chart-bar"></i>
+                            Detailed Analysis
+                        </h3>
+                        <div class="analysis-metrics">
+                            <div class="metric-item">
+                                <div class="metric-header">
+                                    <span class="metric-name">Memory Score</span>
+                                    <span class="metric-value" id="memoryScore">8.2/10</span>
+                                </div>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 82%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-item">
+                                <div class="metric-header">
+                                    <span class="metric-name">Cognitive Function</span>
+                                    <span class="metric-value" id="cognitiveScore">7.8/10</span>
+                                </div>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 78%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-item">
+                                <div class="metric-header">
+                                    <span class="metric-name">Attention & Focus</span>
+                                    <span class="metric-value" id="attentionScore">7.5/10</span>
+                                </div>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 75%"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="metric-item">
+                                <div class="metric-header">
+                                    <span class="metric-name">Language Skills</span>
+                                    <span class="metric-value" id="languageScore">8.5/10</span>
+                                </div>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" style="width: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommendations -->
+                    <div class="recommendations-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-lightbulb"></i>
+                            Recommendations
+                        </h3>
+                        <div class="recommendations-list" id="recommendationsList">
+                            <!-- Recommendations will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Risk Factors -->
+                    <div class="factors-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Risk Factors Analysis
+                        </h3>
+                        <div class="factors-list" id="factorsList">
+                            <!-- Risk factors will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Next Steps -->
+                    <div class="next-steps-card">
+                        <h3 class="card-title">
+                            <i class="fas fa-route"></i>
+                            Next Steps
+                        </h3>
+                        <div class="next-steps-content">
+                            <div class="step-item">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>Monitor Regularly</h4>
+                                    <p>Take follow-up assessments every 6 months</p>
+                                </div>
+                            </div>
+                            
+                            <div class="step-item" id="consultStep">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>Consult Healthcare Provider</h4>
+                                    <p>Discuss these results with your doctor</p>
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>Maintain Healthy Lifestyle</h4>
+                                    <p>Continue with recommended activities</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="results-actions">
+                    <button class="btn btn-secondary" onclick="saveResults()">
+                        <i class="fas fa-save"></i>
+                        Save Results
+                    </button>
+                    <button class="btn btn-outline" onclick="shareResults()">
+                        <i class="fas fa-share"></i>
+                        Share with Doctor
+                    </button>
+                    <a href="history.html" class="btn btn-outline">
+                        <i class="fas fa-history"></i>
+                        View History
+                    </a>
+                    <a href="assessment.html" class="btn btn-primary">
+                        <i class="fas fa-redo"></i>
+                        Take Another Assessment
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="emergency-banner" id="emergencyBanner" style="display: none;">
+        <div class="banner-content">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span>If you're experiencing memory concerns, please consult a healthcare professional immediately.</span>
+            <button class="banner-close" onclick="hideEmergencyBanner()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+   <!-- Remove this line -->
+<!-- <script src="js/results.js"></script> -->
+
+<!-- Add complete inline solution -->
+<script>
+// ===== ENHANCED DEMENTIA RESULTS HANDLER WITH COMPACT STYLING =====
+
+class DementiaResults {
+    constructor() {
+        this.assessmentData = this.loadAssessmentData();
+        this.analysisResults = null;
+        this.init();
+    }
+
+    init() {
+        console.log('DementiaResults initialized');
+        console.log('Assessment Data:', this.assessmentData);
+        
+        if (!this.assessmentData || Object.keys(this.assessmentData).length === 0) {
+            console.warn('No assessment data found, using demo data');
+            this.assessmentData = this.generateDemoData();
+        }
+
+        this.addCompactStyles(); // Add compact styles first
+        this.analyzeResults();
+        this.displayResults();
+        this.createRiskGauge();
+    }
+
+    loadAssessmentData() {
+        try {
+            const data = localStorage.getItem('dementiaAssessmentData');
+            if (data) {
+                const parsed = JSON.parse(data);
+                console.log('Loaded assessment data:', parsed);
+                return parsed;
+            }
+            return null;
+        } catch (error) {
+            console.error('Error loading assessment data:', error);
+            return null;
+        }
+    }
+
+    generateDemoData() {
+        // Generate realistic demo data for testing
+        return {
+            mmse: "26",
+            cdr: "0.5", 
+            nwbv: "0.82",
+            etiv: "1650",
+            asf: "1.15",
+            age: "72",
+            education: "14",
+            gender: "M",
+            ses: "3"
+        };
+    }
+
+    calculateDetailedScores(data) {
+        console.log('Calculating detailed scores with data:', data);
+        
+        // Parse values with fallbacks
+        const mmse = data.mmse ? parseFloat(data.mmse) : 25;
+        const age = data.age ? parseInt(data.age) : 50;
+        const nwbv = data.nwbv ? parseFloat(data.nwbv) : 0.85;
+        const education = data.education ? parseInt(data.education) : 12;
+        const cdr = data.cdr ? parseFloat(data.cdr) : 0;
+
+        console.log('Parsed values:', { mmse, age, nwbv, education, cdr });
+
+        // Calculate base scores from MMSE (primary cognitive measure)
+        const baseScore = Math.max(0, Math.min(10, (mmse / 30) * 10));
+        
+        // Apply age-related decline
+        const ageFactor = age > 70 ? Math.max(0.6, (85 - age) / 15) : 1;
+        
+        // Apply brain volume factor
+        const brainFactor = nwbv >= 0.8 ? 1 : Math.max(0.5, nwbv / 0.8);
+        
+        // Apply education boost (cognitive reserve)
+        const educationBoost = education >= 16 ? 1.15 : education >= 12 ? 1.05 : 0.95;
+        
+        // Apply CDR penalty
+        const cdrPenalty = cdr === 0 ? 1 : cdr <= 0.5 ? 0.85 : cdr <= 1 ? 0.7 : 0.5;
+
+        // Calculate individual domain scores with more realistic variations
+        const memoryScore = Math.max(1, Math.min(10, baseScore * brainFactor * cdrPenalty * 1.0));
+        const cognitiveScore = Math.max(1, Math.min(10, baseScore * ageFactor * educationBoost * cdrPenalty * 0.95));
+        const attentionScore = Math.max(1, Math.min(10, baseScore * 0.92 * cdrPenalty * (age > 70 ? 0.9 : 1)));
+        const languageScore = Math.max(1, Math.min(10, baseScore * educationBoost * cdrPenalty * 1.05));
+
+        const scores = {
+            memory: memoryScore.toFixed(1),
+            cognitive: cognitiveScore.toFixed(1),
+            attention: attentionScore.toFixed(1),
+            language: languageScore.toFixed(1)
+        };
+
+        console.log('Calculated scores:', scores);
+        return scores;
+    }
+
+    analyzeResults() {
+        const data = this.assessmentData;
+        let riskScore = 0;
+        
+        console.log('Analyzing results with data:', data);
+
+        // MMSE Analysis (most important factor)
+        if (data.mmse) {
+            const mmse = parseFloat(data.mmse);
+            console.log('MMSE:', mmse);
+            if (mmse < 12) riskScore += 8;
+            else if (mmse < 18) riskScore += 6;
+            else if (mmse < 24) riskScore += 3;
+            else if (mmse < 27) riskScore += 1;
+        }
+
+        // CDR Analysis
+        if (data.cdr) {
+            const cdr = parseFloat(data.cdr);
+            console.log('CDR:', cdr);
+            if (cdr >= 3) riskScore += 8;
+            else if (cdr >= 2) riskScore += 6;
+            else if (cdr >= 1) riskScore += 4;
+            else if (cdr >= 0.5) riskScore += 2;
+        }
+
+        // Age Analysis
+        if (data.age) {
+            const age = parseInt(data.age);
+            console.log('Age:', age);
+            if (age >= 85) riskScore += 4;
+            else if (age >= 75) riskScore += 3;
+            else if (age >= 65) riskScore += 2;
+            else if (age >= 55) riskScore += 1;
+        }
+
+        // Brain Volume Analysis
+        if (data.nwbv) {
+            const nwbv = parseFloat(data.nwbv);
+            console.log('NWBV:', nwbv);
+            if (nwbv < 0.7) riskScore += 4;
+            else if (nwbv < 0.75) riskScore += 3;
+            else if (nwbv < 0.8) riskScore += 2;
+            else if (nwbv < 0.85) riskScore += 1;
+        }
+
+        // Education (protective factor)
+        if (data.education) {
+            const education = parseInt(data.education);
+            console.log('Education:', education);
+            if (education >= 16) riskScore -= 2; // Strong protection
+            else if (education >= 12) riskScore -= 1; // Moderate protection
+            else if (education < 8) riskScore += 1; // Risk factor
+        }
+
+        console.log('Total risk score:', riskScore);
+
+        // Calculate final risk level
+        let riskLevel = 'LOW';
+        let riskColor = 'low';
+        let confidence = 85;
+
+        if (riskScore >= 15) {
+            riskLevel = 'CRITICAL';
+            riskColor = 'critical';
+            confidence = 95;
+        } else if (riskScore >= 10) {
+            riskLevel = 'HIGH';
+            riskColor = 'high';
+            confidence = 90;
+        } else if (riskScore >= 5) {
+            riskLevel = 'MODERATE';
+            riskColor = 'moderate';
+            confidence = 87;
+        } else {
+            confidence = 83;
+        }
+
+        this.analysisResults = {
+            riskScore,
+            riskLevel,
+            riskColor,
+            confidence,
+            detailedScores: this.calculateDetailedScores(data),
+            riskFactors: this.analyzeRiskFactors(data),
+            recommendations: this.generateRecommendations(data, riskScore)
+        };
+
+        console.log('Final analysis results:', this.analysisResults);
+    }
+
+    analyzeRiskFactors(data) {
+        const factors = [];
+
+        // Age factor
+        if (data.age) {
+            const age = parseInt(data.age);
+            let level = 'low', impact = 'Minimal age-related risk';
+            if (age >= 85) level = 'critical', impact = 'Very high age-related risk factor';
+            else if (age >= 75) level = 'high', impact = 'Significant age-related risk increase';
+            else if (age >= 65) level = 'moderate', impact = 'Moderate age-related risk factor';
+
+            factors.push({
+                name: 'Age Factor',
+                level,
+                impact,
+                value: `${age} years`
+            });
+        }
+
+        // MMSE factor
+        if (data.mmse) {
+            const mmse = parseFloat(data.mmse);
+            let level = 'low', impact = 'Normal cognitive function';
+            if (mmse < 12) level = 'critical', impact = 'Severe cognitive impairment detected';
+            else if (mmse < 18) level = 'high', impact = 'Moderate cognitive impairment present';
+            else if (mmse < 24) level = 'moderate', impact = 'Mild cognitive concerns identified';
+            else if (mmse < 27) level = 'low', impact = 'Slight cognitive changes noted';
+
+            factors.push({
+                name: 'Cognitive Performance',
+                level,
+                impact,
+                value: `${mmse}/30`
+            });
+        }
+
+        // CDR factor
+        if (data.cdr) {
+            const cdr = parseFloat(data.cdr);
+            let level = 'low', impact = 'No functional impairment';
+            if (cdr >= 3) level = 'critical', impact = 'Severe functional decline';
+            else if (cdr >= 2) level = 'high', impact = 'Moderate functional impairment';
+            else if (cdr >= 1) level = 'high', impact = 'Mild functional difficulties';
+            else if (cdr >= 0.5) level = 'moderate', impact = 'Very mild functional changes';
+
+            factors.push({
+                name: 'Functional Status',
+                level,
+                impact,
+                value: `CDR ${cdr}`
+            });
+        }
+
+        // Brain volume factor
+        if (data.nwbv) {
+            const nwbv = parseFloat(data.nwbv);
+            let level = 'low', impact = 'Normal brain volume';
+            if (nwbv < 0.7) level = 'high', impact = 'Significant brain volume loss detected';
+            else if (nwbv < 0.75) level = 'moderate', impact = 'Moderate brain atrophy present';
+            else if (nwbv < 0.8) level = 'low', impact = 'Mild volume reduction noted';
+
+            factors.push({
+                name: 'Brain Volume',
+                level,
+                impact,
+                value: nwbv.toFixed(3)
+            });
+        }
+
+        // Education (protective)
+        if (data.education) {
+            const education = parseInt(data.education);
+            let level = 'moderate', impact = 'Average cognitive reserve';
+            if (education >= 16) level = 'protective', impact = 'High cognitive reserve (protective factor)';
+            else if (education >= 12) level = 'low', impact = 'Good cognitive reserve';
+            else if (education < 8) level = 'moderate', impact = 'Limited cognitive reserve';
+
+            factors.push({
+                name: 'Education Level',
+                level,
+                impact,
+                value: `${education} years`
+            });
+        }
+
+        return factors;
+    }
+
+    generateRecommendations(data, riskScore) {
+        const recommendations = [];
+
+        // Critical risk recommendations
+        if (riskScore >= 15) {
+            recommendations.push({
+                type: 'medical',
+                title: 'Immediate Medical Attention',
+                description: 'Schedule urgent appointment with a neurologist for comprehensive evaluation and treatment',
+                priority: 'critical',
+                icon: 'ambulance'
+            });
+        }
+
+        // High risk recommendations
+        if (riskScore >= 10) {
+            recommendations.push({
+                type: 'medical',
+                title: 'Specialist Consultation',
+                description: 'Consult with a neurologist or memory clinic for detailed assessment',
+                priority: 'high',
+                icon: 'user-md'
+            });
+        } else if (riskScore >= 5) {
+            recommendations.push({
+                type: 'medical',
+                title: 'Healthcare Provider Discussion',
+                description: 'Share results with your primary care physician for monitoring',
+                priority: 'high',
+                icon: 'stethoscope'
+            });
+        }
+
+        // Lifestyle recommendations
+        const mmse = data.mmse ? parseFloat(data.mmse) : 30;
+        const age = data.age ? parseInt(data.age) : 50;
+        const nwbv = data.nwbv ? parseFloat(data.nwbv) : 0.85;
+
+        if (mmse < 27 || age > 65) {
+            recommendations.push({
+                type: 'cognitive',
+                title: 'Cognitive Training',
+                description: 'Engage in mental exercises, puzzles, and learning new skills',
+                priority: 'high',
+                icon: 'brain'
+            });
+        }
+
+        if (age > 60 || nwbv < 0.8) {
+            recommendations.push({
+                type: 'lifestyle',
+                title: 'Physical Exercise',
+                description: 'Regular aerobic exercise to support brain health',
+                priority: 'high',
+                icon: 'heartbeat'
+            });
+        }
+
+        recommendations.push({
+            type: 'prevention',
+            title: 'Healthy Lifestyle',
+            description: 'Mediterranean diet, quality sleep, and social connections',
+            priority: 'medium',
+            icon: 'shield-alt'
+        });
+
+        return recommendations.slice(0, 4); // Limit to 4 recommendations
+    }
+
+    displayResults() {
+        this.updateRiskCard();
+        this.updateDetailedAnalysis();
+        this.updateRecommendations();
+        this.updateRiskFactors();
+        this.updateNextSteps();
+    }
+
+    updateDetailedAnalysis() {
+        const scores = this.analysisResults.detailedScores;
+        console.log('Updating detailed analysis with scores:', scores);
+        
+        // Update score values with animation
+        setTimeout(() => {
+            document.getElementById('memoryScore').textContent = `${scores.memory}/10`;
+            document.getElementById('cognitiveScore').textContent = `${scores.cognitive}/10`;
+            document.getElementById('attentionScore').textContent = `${scores.attention}/10`;
+            document.getElementById('languageScore').textContent = `${scores.language}/10`;
+        }, 300);
+        
+        // Update progress bars with staggered animation
+        setTimeout(() => {
+            document.querySelector('.metric-item:nth-child(1) .metric-fill').style.width = `${parseFloat(scores.memory) * 10}%`;
+        }, 500);
+        setTimeout(() => {
+            document.querySelector('.metric-item:nth-child(2) .metric-fill').style.width = `${parseFloat(scores.cognitive) * 10}%`;
+        }, 700);
+        setTimeout(() => {
+            document.querySelector('.metric-item:nth-child(3) .metric-fill').style.width = `${parseFloat(scores.attention) * 10}%`;
+        }, 900);
+        setTimeout(() => {
+            document.querySelector('.metric-item:nth-child(4) .metric-fill').style.width = `${parseFloat(scores.language) * 10}%`;
+        }, 1100);
+        
+        console.log('Updated detailed analysis display');
+    }
+
+    updateRiskCard() {
+        const results = this.analysisResults;
+        
+        document.getElementById('riskLevel').textContent = `${results.riskLevel} RISK`;
+        document.getElementById('confidenceValue').textContent = `${results.confidence}%`;
+        
+        const riskCard = document.getElementById('riskCard');
+        const riskIcon = document.getElementById('riskIcon');
+        
+        riskCard.className = `risk-card ${results.riskColor}-risk`;
+        
+        // Update icon based on risk level
+        const iconClass = results.riskColor === 'low' ? 'shield-alt' :
+                         results.riskColor === 'moderate' ? 'exclamation-triangle' :
+                         results.riskColor === 'high' ? 'exclamation-circle' : 'skull-crossbones';
+        
+        riskIcon.innerHTML = `<i class="fas fa-${iconClass}"></i>`;
+
+        // Show emergency banner for high/critical risk
+        if (results.riskScore >= 10) {
+            document.getElementById('emergencyBanner').style.display = 'block';
+        }
+    }
+
+    updateRecommendations() {
+        const recommendationsList = document.getElementById('recommendationsList');
+        recommendationsList.innerHTML = '';
+        
+        this.analysisResults.recommendations.forEach(rec => {
+            const recElement = document.createElement('div');
+            recElement.className = `recommendation-item ${rec.priority}`;
+            recElement.innerHTML = `
+                <div class="rec-icon ${rec.type}">
+                    <i class="fas fa-${rec.icon}"></i>
+                </div>
+                <div class="rec-content">
+                    <div class="rec-title">${rec.title}</div>
+                    <div class="rec-description">${rec.description}</div>
+                </div>
+                <div class="rec-priority ${rec.priority}">${rec.priority.toUpperCase()}</div>
+            `;
+            recommendationsList.appendChild(recElement);
+        });
+    }
+
+    updateRiskFactors() {
+        const factorsList = document.getElementById('factorsList');
+        factorsList.innerHTML = '';
+        
+        this.analysisResults.riskFactors.forEach(factor => {
+            const factorElement = document.createElement('div');
+            factorElement.className = `factor-item ${factor.level}`;
+            factorElement.innerHTML = `
+                <div class="factor-indicator ${factor.level}"></div>
+                <div class="factor-content">
+                    <div class="factor-name">${factor.name}</div>
+                    <div class="factor-impact">${factor.impact}</div>
+                </div>
+                <div class="factor-value">${factor.value}</div>
+            `;
+            factorsList.appendChild(factorElement);
+        });
+    }
+
+  updateNextSteps() {
+    const consultStep = document.getElementById('consultStep');
+    if (!consultStep) {
+        console.error('consultStep element not found');
+        return;
+    }
+
+    // Force apply correct structure first
+    const allSteps = document.querySelectorAll('.step-item');
+    allSteps.forEach(step => {
+        step.style.cssText = `
+            display: flex !important;
+            align-items: flex-start !important;
+            gap: 1rem !important;
+            margin: 0 0 1rem 0 !important;
+            float: none !important;
+            clear: both !important;
+        `;
+    });
+
+    // Update consultation step based on risk
+    if (this.analysisResults.riskScore >= 10) {
+        const h4 = consultStep.querySelector('h4');
+        const p = consultStep.querySelector('p');
+        
+        if (h4) h4.textContent = 'Urgent Medical Consultation';
+        if (p) p.textContent = 'Schedule immediate appointment with a neurologist';
+        
+        consultStep.style.borderLeftColor = '#dc3545';
+        consultStep.style.background = 'linear-gradient(135deg, #f8d7da 0%, #ffffff 100%)';
+        consultStep.classList.add('urgent');
+        
+        const stepNumber = consultStep.querySelector('.step-number');
+        if (stepNumber) {
+            stepNumber.style.background = 'linear-gradient(135deg, #dc3545, #c82333)';
+        }
+        
+    } else if (this.analysisResults.riskScore >= 5) {
+        const h4 = consultStep.querySelector('h4');
+        const p = consultStep.querySelector('p');
+        
+        if (h4) h4.textContent = 'Medical Consultation Recommended';
+        if (p) p.textContent = 'Discuss results with your healthcare provider';
+        
+        consultStep.style.borderLeftColor = '#fd7e14';
+        consultStep.style.background = 'linear-gradient(135deg, #fff3cd 0%, #ffffff 100%)';
+        
+        const stepNumber = consultStep.querySelector('.step-number');
+        if (stepNumber) {
+            stepNumber.style.background = 'linear-gradient(135deg, #fd7e14, #e8690b)';
+        }
+    }
+}
+
+
+
+    createRiskGauge() {
+        const canvas = document.getElementById('riskGauge');
+        const ctx = canvas.getContext('2d');
+        const riskPercentage = Math.min(100, (this.analysisResults.riskScore / 20) * 100);
+        
+        // Clear canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height - 10;
+        const radius = 80;
+        const startAngle = Math.PI;
+        const endAngle = 2 * Math.PI;
+        
+        // Draw background arc
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.lineWidth = 20;
+        ctx.strokeStyle = '#f0f0f0';
+        ctx.stroke();
+        
+        // Draw risk arc with animation
+        const riskAngle = startAngle + (endAngle - startAngle) * (riskPercentage / 100);
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, startAngle, riskAngle);
+        ctx.lineWidth = 20;
+        
+        // Color based on risk level
+        const colors = {
+            low: '#28a745',
+            moderate: '#ffc107',
+            high: '#fd7e14',
+            critical: '#dc3545'
+        };
+        ctx.strokeStyle = colors[this.analysisResults.riskColor] || '#28a745';
+        ctx.stroke();
+        
+        // Draw percentage text
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText(`${Math.round(riskPercentage)}%`, centerX, centerY - 20);
+        ctx.font = '14px Arial';
+        ctx.fillText('Risk Level', centerX, centerY + 5);
+    }
+addCompactStyles() {
+    // Remove existing styles first
+    const existingStyles = document.querySelector('#compact-results-styles');
+    if (existingStyles) existingStyles.remove();
+
+    const style = document.createElement('style');
+    style.id = 'compact-results-styles';
+    style.textContent = `
+        /* ===== COMPACT RESULTS STYLING ===== */
+        
+        /* Risk Card - Compact */
+        .risk-card {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .risk-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        
+        .risk-card.low-risk { 
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); 
+            border-left: 4px solid #28a745;
+        }
+        .risk-card.moderate-risk { 
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%); 
+            border-left: 4px solid #ffc107;
+        }
+        .risk-card.high-risk { 
+            background: linear-gradient(135deg, #ffe6cc 0%, #ffcc99 100%); 
+            border-left: 4px solid #fd7e14;
+        }
+        .risk-card.critical-risk { 
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%); 
+            border-left: 4px solid #dc3545;
+        }
+
+        .risk-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .risk-icon { 
+            font-size: 2.5rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .risk-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        .risk-level {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            background: linear-gradient(135deg, #333, #666);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .risk-subtitle {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .confidence-score {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .confidence-value {
+            color: #007bff;
+            font-size: 1.1rem;
+        }
+
+        /* Compact Analysis Metrics */
+        .analysis-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .metric-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border-left: 3px solid #007bff;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .metric-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            border-left-width: 5px;
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .metric-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .metric-value {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #007bff;
+            padding: 0.25rem 0.5rem;
+            background: rgba(0, 123, 255, 0.1);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .metric-bar {
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .metric-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745 0%, #007bff 50%, #17a2b8 100%);
+            transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .metric-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 20px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: shimmer 2.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-20px); }
+            100% { transform: translateX(200px); }
+        }
+
+        /* Compact Recommendations */
+        .recommendations-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .recommendation-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 0.75rem;
+            border-left: 3px solid;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recommendation-item.critical { border-left-color: #dc3545; }
+        .recommendation-item.high { border-left-color: #fd7e14; }
+        .recommendation-item.medium { border-left-color: #ffc107; }
+
+        .recommendation-item:hover {
+            transform: translateX(4px) translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .rec-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .rec-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .rec-icon.medical { background: linear-gradient(135deg, #dc3545, #c82333); }
+        .rec-icon.cognitive { background: linear-gradient(135deg, #007bff, #0056b3); }
+        .rec-icon.lifestyle { background: linear-gradient(135deg, #28a745, #1e7e34); }
+        .rec-icon.monitoring { background: linear-gradient(135deg, #6f42c1, #5a32a3); }
+        .rec-icon.prevention { background: linear-gradient(135deg, #20c997, #17a085); }
+
+        .rec-content { flex: 1; }
+
+        .rec-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.25rem;
+            color: #333;
+        }
+
+        .rec-description {
+            font-size: 0.8rem;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        .rec-priority {
+            padding: 0.2rem 0.5rem;
+            border-radius: 0.75rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .rec-priority.critical {
+            background: #dc3545;
+            color: white;
+        }
+
+        .rec-priority.high {
+            background: #fd7e14;
+            color: white;
+        }
+
+        .rec-priority.medium {
+            background: #ffc107;
+            color: #333;
+        }
+
+        /* Compact Risk Factors */
+        .factors-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .factor-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 0.75rem;
+            transition: all 0.3s ease;
+            border-left: 3px solid var(--factor-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .factor-item:hover {
+            transform: translateX(4px) translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .factor-item.low { --factor-color: #28a745; }
+        .factor-item.moderate { --factor-color: #ffc107; }
+        .factor-item.high { --factor-color: #fd7e14; }
+        .factor-item.critical { --factor-color: #dc3545; }
+        .factor-item.protective { --factor-color: #17a2b8; }
+
+        .factor-indicator {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .factor-indicator:hover {
+            transform: scale(1.2);
+        }
+
+        .factor-indicator::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            animation: pulse 3s infinite;
+        }
+
+        .factor-indicator.low { background: #28a745; }
+        .factor-indicator.low::after { background: rgba(40, 167, 69, 0.3); }
+        .factor-indicator.moderate { background: #ffc107; }
+        .factor-indicator.moderate::after { background: rgba(255, 193, 7, 0.3); }
+        .factor-indicator.high { background: #fd7e14; }
+        .factor-indicator.high::after { background: rgba(253, 126, 20, 0.3); }
+        .factor-indicator.critical { background: #dc3545; }
+        .factor-indicator.critical::after { background: rgba(220, 53, 69, 0.3); }
+        .factor-indicator.protective { background: #17a2b8; }
+        .factor-indicator.protective::after { background: rgba(23, 162, 184, 0.3); }
+
+        .factor-content { flex: 1; }
+
+        .factor-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #333;
+            margin-bottom: 0.2rem;
+        }
+
+        .factor-impact {
+            font-size: 0.75rem;
+            color: #666;
+            line-height: 1.3;
+        }
+
+        .factor-value {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #333;
+            padding: 0.25rem 0.5rem;
+            background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+            border-radius: 0.75rem;
+            min-width: 50px;
+            text-align: center;
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* ===== NEXT STEPS SECTION - FIXED ===== */
+        .next-steps-content {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 1rem !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+
+        .step-item {
+            display: flex !important;
+            align-items: flex-start !important;
+            gap: 1rem !important;
+            padding: 1rem !important;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%) !important;
+            border-radius: 0.75rem !important;
+            border-left: 4px solid #007bff !important;
+            transition: all 0.3s ease !important;
+            position: relative !important;
+            margin: 0 !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05) !important;
+            float: none !important;
+            clear: both !important;
+        }
+
+        .step-item:hover {
+            transform: translateX(4px) translateY(-2px) !important;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1) !important;
+            border-left-width: 6px !important;
+        }
+
+        .step-number {
+            width: 35px !important;
+            height: 35px !important;
+            background: linear-gradient(135deg, #007bff, #0056b3) !important;
+            color: white !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-weight: 700 !important;
+            font-size: 1rem !important;
+            flex-shrink: 0 !important;
+            box-shadow: 0 3px 8px rgba(0, 123, 255, 0.3) !important;
+            transition: all 0.3s ease !important;
+            margin: 0 !important;
+            float: none !important;
+        }
+
+        .step-number:hover {
+            transform: scale(1.1) !important;
+            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4) !important;
+        }
+
+        .step-content {
+            flex: 1 !important;
+            min-width: 0 !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .step-content h4 {
+            font-size: 1rem !important;
+            font-weight: 600 !important;
+            color: #333 !important;
+            margin: 0 0 0.25rem 0 !important;
+            line-height: 1.3 !important;
+            padding: 0 !important;
+        }
+
+        .step-content p {
+            font-size: 0.85rem !important;
+            color: #666 !important;
+            margin: 0 !important;
+            line-height: 1.4 !important;
+            padding: 0 !important;
+        }
+
+        /* Special styling for consultation step */
+        .step-item#consultStep {
+            border-left-color: #fd7e14 !important;
+            background: linear-gradient(135deg, #fff3cd 0%, #ffffff 100%) !important;
+        }
+
+        .step-item#consultStep .step-number {
+            background: linear-gradient(135deg, #fd7e14, #e8690b) !important;
+            box-shadow: 0 3px 8px rgba(253, 126, 20, 0.3) !important;
+        }
+
+        /* Critical consultation styling */
+        .step-item.urgent {
+            border-left-color: #dc3545 !important;
+            background: linear-gradient(135deg, #f8d7da 0%, #ffffff 100%) !important;
+        }
+
+        .step-item.urgent .step-number {
+            background: linear-gradient(135deg, #dc3545, #c82333) !important;
+            box-shadow: 0 3px 8px rgba(220, 53, 69, 0.3) !important;
+        }
+
+        /* Card Titles - More Compact */
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #f8f9fa;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #333;
+        }
+
+        .card-title i {
+            color: #007bff;
+            font-size: 1rem;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 0.3; }
+            100% { transform: scale(1); opacity: 0.7; }
+        }
+
+        /* Emergency banner enhancement */
+        .emergency-banner {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            animation: slideDownBanner 0.5s ease, pulse-banner 2s infinite 1s;
+        }
+
+        @keyframes slideDownBanner {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        @keyframes pulse-banner {
+            0%, 100% { box-shadow: 0 4px 16px rgba(220, 53, 69, 0.3); }
+            50% { box-shadow: 0 8px 32px rgba(220, 53, 69, 0.5); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .analysis-metrics {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            
+            .risk-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 1rem;
+            }
+            
+            .risk-header {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .metric-item,
+            .recommendation-item,
+            .factor-item,
+            .step-item {
+                padding: 0.75rem !important;
+            }
+
+            .metric-value {
+                font-size: 1rem;
+            }
+
+            .rec-icon,
+            .factor-indicator {
+                width: 30px;
+                height: 30px;
+            }
+
+            .step-item {
+                padding: 0.75rem !important;
+                gap: 0.75rem !important;
+            }
+            
+            .step-number {
+                width: 30px !important;
+                height: 30px !important;
+                font-size: 0.9rem !important;
+            }
+            
+            .step-content h4 {
+                font-size: 0.9rem !important;
+            }
+            
+            .step-content p {
+                font-size: 0.8rem !important;
+            }
+        }
+
+        /* Results grid and cards */
+        .results-grid {
+            gap: 1.5rem;
+        }
+
+        .analysis-card,
+        .recommendations-card,
+        .factors-card,
+        .next-steps-card {
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .analysis-card:hover,
+        .recommendations-card:hover,
+        .factors-card:hover,
+        .next-steps-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+    
+    /* ===== ACTION BUTTONS SECTION FIX ===== */
+.results-actions {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    padding: 2rem 1rem !important;
+    margin-top: 2rem !important;
+    border-top: 1px solid #e9ecef !important;
+    flex-wrap: wrap !important;
+}
+
+.results-actions .btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding: 0.75rem 1.5rem !important;
+    border-radius: 0.75rem !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+    cursor: pointer !important;
+    font-size: 0.9rem !important;
+    margin: 0.25rem !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+}
+
+.results-actions .btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15) !important;
+}
+
+.results-actions .btn-primary {
+    background: linear-gradient(135deg, #007bff, #0056b3) !important;
+    color: white !important;
+}
+
+.results-actions .btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3, #004085) !important;
+}
+
+.results-actions .btn-secondary {
+    background: linear-gradient(135deg, #6c757d, #5a6268) !important;
+    color: white !important;
+}
+
+.results-actions .btn-secondary:hover {
+    background: linear-gradient(135deg, #5a6268, #495057) !important;
+}
+
+.results-actions .btn-outline {
+    background: transparent !important;
+    color: #007bff !important;
+    border: 2px solid #007bff !important;
+}
+
+.results-actions .btn-outline:hover {
+    background: #007bff !important;
+    color: white !important;
+}
+
+/* Responsive design for action buttons */
+@media (max-width: 768px) {
+    .results-actions {
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        padding: 1.5rem 1rem !important;
+    }
+    
+    .results-actions .btn {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 1rem 1.5rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .results-actions {
+        padding: 1rem 0.5rem !important;
+    }
+    
+    .results-actions .btn {
+        font-size: 0.85rem !important;
+        padding: 0.875rem 1.25rem !important;
+    }
+}
+
+        `;
+    document.head.appendChild(style);
+}
+
+
+    showNoDataError() {
+        document.querySelector('.results-container').innerHTML = `
+            <div style="text-align: center; padding: 4rem 2rem;">
+                <i class="fas fa-exclamation-triangle" style="font-size: 4rem; color: #ffc107; margin-bottom: 2rem;"></i>
+                <h2 style="color: #333; margin-bottom: 1rem;">No Assessment Data Found</h2>
+                <p style="color: #666; margin-bottom: 2rem;">Please complete the medical assessment first.</p>
+                <a href="assessment.html" class="btn btn-primary">
+                    <i class="fas fa-clipboard-list"></i>
+                    Take Assessment
+                </a>
+            </div>
+        `;
+    }
+}
+
+// Global functions
+function saveResults() {
+    const results = window.dementiaResults.analysisResults;
+    const timestamp = new Date().toISOString();
+    
+    let history = JSON.parse(localStorage.getItem('dementiaHistory') || '[]');
+    history.push({
+        timestamp,
+        data: window.dementiaResults.assessmentData,
+        results
+    });
+    localStorage.setItem('dementiaHistory', JSON.stringify(history));
+    
+    alert('Results saved successfully!');
+}
+
+function shareResults() {
+    const results = window.dementiaResults.analysisResults;
+    const shareText = `Dementia Risk Assessment Results:
+Risk Level: ${results.riskLevel}
+Confidence: ${results.confidence}%
+Memory Score: ${results.detailedScores.memory}/10
+Cognitive Score: ${results.detailedScores.cognitive}/10
+Date: ${new Date().toLocaleDateString()}
+
+Please consult with your healthcare provider for professional medical advice.`;
+    
+    if (navigator.share) {
+        navigator.share({
+            title: 'Dementia Risk Assessment Results',
+            text: shareText
+        });
+    } else {
+        navigator.clipboard.writeText(shareText);
+        alert('Results copied to clipboard!');
+    }
+}
+
+function hideEmergencyBanner() {
+    document.getElementById('emergencyBanner').style.display = 'none';
+}
+
+// Initialize when DOM loads
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing results...');
+    window.dementiaResults = new DementiaResults();
+});
+</script>
+
+</body>
+</html>
